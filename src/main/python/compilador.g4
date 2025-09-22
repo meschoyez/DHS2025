@@ -10,6 +10,11 @@ LLC : '}' ;
 PYC : ';' ;
 ASIG : '=' ;
 COMA : ',' ;
+SUMA : '+' ;
+RESTA : '-' ;
+MULT : '*' ;
+DIV : '/' ;
+MOD : '%' ;
 
 NUMERO : DIGITO+ ;
 
@@ -60,11 +65,15 @@ ielse : ELSE instruccion
 
 ifor : FOR PA  PYC  PYC  PC instruccion ;
 
-declaracion : tipo ID listavar PYC ;
+declaracion : tipo ID inic listavar PYC ;
 
-listavar : COMA ID listavar
+listavar : COMA ID inic listavar
          |
          ;
+
+inic : ASIG opal
+     |
+     ;
 
 tipo : INT
      | DOUBLE
@@ -72,6 +81,25 @@ tipo : INT
 
 asignacion : ID ASIG opal PYC ;
 
-opal : NUMERO
-     | ID
+opal : exp
      ;
+
+exp : term e ;
+
+e : SUMA term e
+  | RESTA term e
+  |
+  ;
+
+term : factor t ;
+
+t : MULT factor t
+  | DIV factor t
+  | MOD factor t
+  |
+  ;
+
+factor : NUMERO
+       | ID
+       | PA exp PC
+       ;
