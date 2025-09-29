@@ -9,11 +9,9 @@ if (a) {
 while (a) {
     x = a;
     y = 10;
+    while (x)
+        x = x;
 }
-
-while (x)
-    x = x;
-
 
 for (y = 0; y < 10; ++y) {
     x = 0;
