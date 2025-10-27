@@ -1,0 +1,106 @@
+Código de Tres Direcciones
+
+Operación Básica
+
+    x = y op z
+
+x = y
+x = cte
+jmp L
+if x jmp L
+ifnot x jmp L
+push x
+pop x
+
+Funciones auxiliares:
+ a) Generador de nombres de variables temporales
+ b) Generador de nombres de etiquetas
+
+---------
+Ejemplo
+x = y + 2 * z - 2;
+
+t0 = 2 * z
+t1 = y + t0
+t2 = t1 - 2
+x = t2
+
+***
+Ejemplo
+x = (y + 2) * (z - 2);
+
+t0 = y + 2
+ti = z - 2
+t2 = t0 * t1
+x = t2
+
+***
+Ejemplo
+
+if ((x > 10) && (y < 5) || (z == 0)) <...>
+
+t0 = x > 10
+t1 = y < 5
+t2 = t0 && t1
+t3 = z == 0
+t4 = t2 || t3
+if t4 <...>
+
+***
+Ejemplo
+if (x < 0)
+    z = y * x
+else
+    z = y / x
+
+t0 = x < 0
+if t0 jmp L0
+t1 = y / x
+z = t1
+jmp L1
+label L0
+t2 = y * x
+z = t2
+label L1
+
+***
+Ejemplo
+x = 0
+while (x < 10)
+    x = x + 1
+
+x = 0
+label L0
+t0 = x < 10
+ifnot t0 jmp L1
+t1 = x + 1
+x = t1
+jmp L0
+label L1
+
+***
+Ejemplo
+
+x = f(y,z);
+
+push y
+push z
+push L0
+jmp f
+label L0
+pop x
+
+***
+Ejemplo
+
+int f(int y, int z) {
+    return y + z;
+}
+
+label f
+pop t0
+pop z
+pop y
+t1 = y + z
+push t1
+jmp t0
