@@ -104,3 +104,147 @@ pop y
 t1 = y + z
 push t1
 jmp t0
+
+--------------------------------
+
+Optimización de Código Intermedio
+
+1) Propagación de Constantes
+2) Eliminación de Acciones Repetidas
+
+Ejemplo
+
+x1 = (-b + (b * b - 4 * a * c) ) / (2 * a);
+x2 = (-b - (b * b - 4 * a * c) ) / (2 * a);
+
+t0 = b * b
+t1 = 4 * a
+t2 = t1 * c
+t3 = t0 - t2
+t4 = -1 * b
+t5 = t4 + t3
+t6 = 2 * a
+t7 = t5 / t6
+x1 = t7
+t8 = b * b
+t9 = 4 * a
+t10 = t9 * c
+t11 = t8 - t10
+t12 = -1 * b
+t13 = t12 - t11
+t14 = 2 * a
+t15 = t13 / t14
+x2 = t15
+
+--
+2) Eliminación de Acciones Repetidas
+--
+t0 = b * b
+t1 = 4 * a
+t2 = t1 * c
+t3 = t0 - t2
+t4 = -1 * b
+t5 = t4 + t3
+t6 = 2 * a
+t7 = t5 / t6
+x1 = t7
+t10 = t1 * c
+t11 = t0 - t10
+t13 = t4 - t11
+t15 = t13 / t6
+x2 = t15
+
+--
+t0 = b * b
+t1 = 4 * a
+t2 = t1 * c
+t3 = t0 - t2
+t4 = -1 * b
+t5 = t4 + t3
+t6 = 2 * a
+t7 = t5 / t6
+x1 = t7
+t11 = t0 - t2
+t13 = t4 - t11
+t15 = t13 / t6
+x2 = t15
+
+--
+t0 = b * b
+t1 = 4 * a
+t2 = t1 * c
+t3 = t0 - t2
+t4 = -1 * b
+t5 = t4 + t3
+t6 = 2 * a
+t7 = t5 / t6
+x1 = t7
+t13 = t4 - t3
+t15 = t13 / t6
+x2 = t15
+
+--
+t0 = b * b
+t1 = 4 * a
+t2 = t1 * c
+t3 = t0 - t2
+t4 = -1 * b
+t5 = t4 + t3
+t6 = 2 * a
+t7 = t5 / t6
+x1 = t7
+t13 = t4 - t3
+t15 = t13 / t6
+x2 = t15
+
+--
+t0 = b * b
+t1 = 4 * a
+t2 = t1 * c
+t3 = t0 - t2
+t4 = -1 * b
+t5 = t4 + t3
+t6 = 2 * a
+x1 = t5 / t6
+t13 = t4 - t3
+x2 = t13 / t6
+
+----------
+int x = 5;
+int a, b, c;
+
+a = x * x;
+b = a * 10 / x;
+c = b * 5 - a * 5;
+
+x = 5
+t0 = x * x
+a = t0
+t1 = a * 10
+t2 = t1 / x
+b = t2
+t3 = b * 5
+t4 = a * 5
+t5 = t3 - t4
+c = t5
+
+--
+1) Propagación de Constantes
+--
+
+x = 5
+t0 = 25
+a = 25
+t1 = 250
+t2 = 50
+b = 50
+t3 = 250
+t4 = 125
+t5 = 125
+c = 125
+
+-- (Eliminación Acciones Repetidas)
+x = 5
+a = 25
+b = 50
+c = 125
